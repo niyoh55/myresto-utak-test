@@ -16,8 +16,6 @@ const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const arrOfID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   const { products, isLoading, isError, isDeleteLoading } = useSelector(
     (state) => state.product
   );

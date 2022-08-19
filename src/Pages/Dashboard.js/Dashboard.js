@@ -1,8 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 const Dashboard = () => {
-  const arrOfID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  // const navigate = useNavigate();
   const location = useLocation();
 
   console.log(location.state);
