@@ -8,10 +8,21 @@ const url =
 export const addCategoryAPI = createAsyncThunk(
   "category/add",
   async (payload, thunkAPI) => {
-    console.log("REGISTER THUNK LUL");
     try {
+      const currCategories = thunkAPI.getState().category.categories;
+
+      if (
+        currCategories.find(
+          (category) =>
+            category.categoryName.toLowerCase() ==
+            payload.categoryName.toLowerCase().trim()
+        )
+      ) {
+        throw new Error("Existing Category Found");
+      }
+
       const res = await axios.post(`${url}.json`, {
-        categoryName: payload.categoryName,
+        categoryName: payload.categoryName.trim(),
       });
 
       return { categoryID: res.data.name, categoryName: payload.categoryName };
@@ -24,7 +35,6 @@ export const addCategoryAPI = createAsyncThunk(
 export const getCategoryAPI = createAsyncThunk(
   "category/get",
   async (payload, thunkAPI) => {
-    console.log("GET THUNK LUL");
     try {
       const res = await axios.get(`${url}.json`);
       let filteredData = [];
@@ -41,11 +51,25 @@ export const getCategoryAPI = createAsyncThunk(
 export const deleteCategoryAPI = createAsyncThunk(
   "category/delete",
   async (payload, thunkAPI) => {
-    console.log("REGISTER THUNK LUL");
     const { categoryID } = payload;
     try {
       const res = await axios.delete(`${url}/${categoryID}.json`);
       return categoryID;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const editCategoryAPI = createAsyncThunk(
+  "category/edit",
+  async (payload, thunkAPI) => {
+    const { categoryID, categoryName } = payload;
+    try {
+      const res = await axios.put(`${url}/${categoryID}.json`, {
+        categoryName: categoryName,
+      });
+      return payload;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -58,32 +82,27 @@ const categorySlice = createSlice({
     categories: [],
     isLoading: false,
     isError: false,
+    isDeleteLoading: false,
   },
   reducers: {
-    addCategory: (state, action) => {
-      console.log("category slice");
-      console.log(action.payload);
-    },
+    addCategory: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder
       .addCase(addCategoryAPI.pending, (state) => {
-        console.log("pending request");
         state.isLoading = true;
       })
       .addCase(addCategoryAPI.fulfilled, (state, action) => {
-        console.log("CATEGORY API");
         toast.info("Category Added Successfully");
         state.isLoading = false;
         state.categories.push(action.payload);
       })
       .addCase(addCategoryAPI.rejected, (state, action) => {
-        state.isLoading = true;
+        state.isLoading = false;
         state.isError = true;
         toast.error(action.payload);
       })
       .addCase(getCategoryAPI.pending, (state) => {
-        console.log("pending request");
         state.isLoading = true;
       })
       .addCase(getCategoryAPI.fulfilled, (state, action) => {
@@ -91,24 +110,40 @@ const categorySlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getCategoryAPI.rejected, (state, action) => {
-        console.log("get category error");
         state.categories = [];
-        state.isLoading = true;
+        state.isLoading = false;
         state.isError = true;
         toast.error(action.payload);
       })
       .addCase(deleteCategoryAPI.pending, (state) => {
-        console.log("pending request");
-        state.isLoading = true;
+        state.isDeleteLoading = true;
       })
       .addCase(deleteCategoryAPI.fulfilled, (state, action) => {
         state.categories = state.categories.filter(
           (category) => category.categoryID !== action.payload
         );
-        state.isLoading = false;
+        state.isDeleteLoading = false;
       })
       .addCase(deleteCategoryAPI.rejected, (state, action) => {
+        state.isDeleteLoading = false;
+        state.isError = true;
+        toast.error(action.payload);
+      })
+      .addCase(editCategoryAPI.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(editCategoryAPI.fulfilled, (state, action) => {
+        let index = state.categories.findIndex(
+          (category) => category.categoryID == action.payload.categoryID
+        );
+        state.categories[index] = {
+          categoryID: action.payload.categoryID,
+          categoryName: action.payload.categoryName,
+        };
+        state.isLoading = false;
+      })
+      .addCase(editCategoryAPI.rejected, (state, action) => {
+        state.isLoading = false;
         state.isError = true;
         toast.error(action.payload);
       });

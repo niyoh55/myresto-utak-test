@@ -1,36 +1,54 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Field, setIn } from "formik";
+import { Formik, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { addProductAPI } from "../../../Features/Slices/ProductSlice";
+import { editProductAPI } from "../../../Features/Slices/ProductSlice";
 import { toast } from "react-toastify";
-import {
-  addCategoryAPI,
-  getCategoryAPI,
-} from "../../../Features/Slices/CategorySlice";
+import { addCategoryAPI } from "../../../Features/Slices/CategorySlice";
 import InputField from "../../../Components/InputField";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AddProduct = () => {
-  const [inputs, setInputs] = useState([
-    { variationName: "", additionalCost: 0 },
-  ]);
-  const [addOns, setAddons] = useState([{ addOnName: "", additionalCost: 0 }]);
+const EditProduct = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const {
+    productName,
+    price,
+    stock,
+    cost,
+    hasOptions,
+    category,
+    optionName,
+    hasAddons,
+    productID,
+    variations,
+    addOns: addOnsCopy,
+  } = location.state ? location.state : "null";
+
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/", { replace: true });
+    } else {
+    }
+  }, []);
+
+  let categoryCopy = category;
+
+  const [inputs, setInputs] = useState(
+    hasOptions && variations
+      ? [...variations]
+      : [{ variationName: "", additionalCost: 0 }]
+  );
+  const [addOns, setAddons] = useState(
+    hasAddons && addOnsCopy
+      ? [...addOnsCopy]
+      : [{ addOnName: "", additionalCost: 0 }]
+  );
   const [addCategoryInput, setAddCategoryInput] = useState("");
   const dispatch = useDispatch();
 
-  const { categories, isLoading, isError } = useSelector(
-    (state) => state.category
-  );
-  const [categoriesList, setCategoriesList] = useState(
-    categories ? categories : []
-  );
-
-  useEffect(() => {
-    dispatch(getCategoryAPI());
-  }, []);
-
-  useEffect(() => {
-    setCategoriesList(categories);
-  }, [categories]);
+  const { categories } = useSelector((state) => state.category);
+  const [categoriesList, setCategoriesList] = useState(categories);
 
   const handleAddCategory = (e) => {
     e.preventDefault();
@@ -93,20 +111,27 @@ const AddProduct = () => {
     <div className="w-full h-full min-h-screen px-20 ">
       <div className="py-10">
         <h1 className="text-7xl font-anek font-bold tracking-wide mb-5 ">
-          Add Product
+          Edit Product
         </h1>
       </div>
 
       <Formik
         initialValues={{
-          productName: "",
-          price: 0,
-          cost: 0,
-          stock: 0,
-          hasOptions: false,
-          optionName: "",
-          category: categoriesList.length !== 0 ? categoriesList[0] : "",
-          hasAddons: false,
+          productName: productName,
+          price: price,
+          cost: cost,
+          stock: stock,
+          hasOptions: hasOptions,
+          optionName: optionName,
+          category:
+            categoriesList?.findIndex((category) => {
+              console.log(category);
+              console.log(categoryCopy);
+              return category.categoryName == categoryCopy;
+            }) >= 0
+              ? categoryCopy
+              : "Please select a category...",
+          hasAddons: hasAddons,
         }}
         validate={(values) => {
           const errors = {};
@@ -163,9 +188,9 @@ const AddProduct = () => {
             optionName,
             hasAddons,
           } = values;
-
+          console.log(values);
           let status = await dispatch(
-            addProductAPI({
+            editProductAPI({
               productName,
               price: Number(price),
               stock: Number(stock),
@@ -176,13 +201,15 @@ const AddProduct = () => {
               inputs,
               hasAddons,
               addOns,
+              productID,
             })
           );
-
-          if (status.payload.name) {
+          console.log(status.payload);
+          if (status.payload.name || status.payload) {
             resetForm();
             setInputs([{ variationName: "", additionalCost: 0 }]);
             setAddons([{ addOnName: "", additionalCost: 0 }]);
+            navigate("/products", { replace: true });
           } else {
             toast.error("Form Submission Failed");
           }
@@ -257,13 +284,20 @@ const AddProduct = () => {
                     as="select"
                     name="category"
                     className="select select-bordered"
+                    value={values.category}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   >
-                    <option className="text-lg" defaultChecked>
+                    <option className="text-lg" value={"none"}>
                       Please select a category...
                     </option>
                     {categoriesList.map((category) => {
                       return (
-                        <option className="text-lg" key={category.categoryID}>
+                        <option
+                          className="text-lg"
+                          key={category.categoryID}
+                          value={category.categoryName}
+                        >
                           {category.categoryName}
                         </option>
                       );
@@ -437,4 +471,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

@@ -20,7 +20,6 @@ const Sidebar = (props) => {
   const currLocation = location.pathname;
 
   useEffect(() => {
-    console.log("triggered useEffect");
     if (currLocation == "/") {
       document.title = "Dashboard";
     } else if (currLocation == "/products") {
