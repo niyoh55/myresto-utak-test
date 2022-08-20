@@ -105,7 +105,7 @@ const AddProduct = () => {
           stock: 0,
           hasOptions: false,
           optionName: "",
-          category: categoriesList.length !== 0 ? categoriesList[0] : "",
+          category: "Please select a category...",
           hasAddons: false,
         }}
         validate={(values) => {

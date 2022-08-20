@@ -20,10 +20,10 @@ export const addProductAPI = createAsyncThunk(
       addOns,
     } = payload;
 
-    let filteredVariations = inputs.filter(
+    let filteredVariations = inputs?.filter(
       (option) => option.variationName.length !== 0
     );
-    let filteredAddons = addOns.filter(
+    let filteredAddons = addOns?.filter(
       (option) => option.addOnName.length !== 0
     );
     try {
@@ -34,10 +34,10 @@ export const addProductAPI = createAsyncThunk(
         cost,
         hasOptions,
         category,
-        optionName,
-        variations: [...filteredVariations],
+        optionName: hasOptions ? optionName : null,
+        variations: hasOptions ? [...filteredVariations] : null,
         hasAddons,
-        addOns: [...filteredAddons],
+        addOns: hasAddons ? [...filteredAddons] : null,
       });
       return res.data;
     } catch (e) {
