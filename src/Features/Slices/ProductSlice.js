@@ -41,7 +41,7 @@ export const addProductAPI = createAsyncThunk(
       });
       return res.data;
     } catch (e) {
-      console.log(e);
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
@@ -127,22 +127,19 @@ const productSlice = createSlice({
     isDeleteLoading: false,
   },
   reducers: {
-    addProduct: (state, action) => {
-      console.log(action.payload);
-    },
+    addProduct: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder
       .addCase(addProductAPI.pending, (state) => {
-        console.log("pending request");
+        state.isLoading = true;
       })
       .addCase(addProductAPI.fulfilled, (state, action) => {
-        console.log("PRODUCT API");
-        console.log("successful request");
-        console.log(action.payload);
+        state.isLoading = false;
         toast.info("Product Added Successfully");
       })
       .addCase(addProductAPI.rejected, (state, action) => {
+        state.isLoading = false;
         toast.error("Failed to add a category.");
       })
 
@@ -179,7 +176,6 @@ const productSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(editProductAPI.fulfilled, (state, action) => {
-        console.log(action.payload.productID);
         let index = state.products.findIndex(
           (product) => product.productID == action.payload.productID
         );

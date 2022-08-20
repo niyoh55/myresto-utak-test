@@ -57,8 +57,7 @@ const Category = () => {
         categoryID: editCategoryID,
       })
     );
-    console.log(res);
-    console.log(res.meta.requestStatus);
+
     if (res.meta.requestStatus == "fulfilled") {
       toast.info("Edit Successful");
       handleModalCancel();
@@ -75,8 +74,8 @@ const Category = () => {
   };
 
   return (
-    <div className="w-full h-auto min-h-screen max-w-full px-20">
-      <div className="flex flex-row gap-x-10 justify-between items-center">
+    <div className="w-full h-auto min-h-screen max-w-full px-5 md:px-10 lg:px-20">
+      <div className="flex flex-col mb-10 md:mb-0 md:flex-row gap-x-10 justify-between items-center">
         <div>
           <h1 className="text-6xl font-anek py-10 font-bold tracking-wide">
             Category
@@ -148,7 +147,7 @@ const Category = () => {
                 .map((category) => {
                   return (
                     <tr key={category.categoryID}>
-                      <td className="text-base font-anek font-normal">
+                      <td className="text-base font-anek font-normal sm:text-base md:text-lg xl:text-xl">
                         {category.categoryName}
                       </td>
                       <td className="flex flex-row justify-center items-center gap-x-5 ">

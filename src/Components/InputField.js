@@ -6,7 +6,7 @@ const InputField = (props) => {
   return (
     <div className="form-control w-full max-w-xs">
       <label className="label" htmlFor={name}>
-        <span className="label-text text-xl">{title}</span>
+        <span className="label-text text-2xl">{title}</span>
       </label>
       <input
         className={`input input-bordered w-full max-w-xs ${

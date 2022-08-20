@@ -44,13 +44,13 @@ const Sidebar = (props) => {
       //onClick={() => setIsClicked((x) => !x)}
     >
       <motion.button
-        className={`h-32 w-32`}
+        className={`h-20 w-20 mb-10 md:mb-0 md:h-32 md:w-32`}
         animate={{
           display: isHidden ? "none" : "flex",
           width: isHidden ? "0%" : "100%",
         }}
         transition={{ delay: isHidden ? 0.3 : 0.1 }}
-        // onClick={() => navigate("/")}
+        onClick={() => navigate("/")}
       >
         <img
           src="https://i.ibb.co/ym9rwqf/My-Resto-Logo-Updated.png"
@@ -73,8 +73,8 @@ const Sidebar = (props) => {
             navigate("/");
           }}
         >
-          <MdDashboard className="text-6xl" />
-          <h1 className="text-lg">Dashboard</h1>
+          <MdDashboard className="text-3xl sm:text-4xl md:text-6xl" />
+          <h1 className="text-base sm:text-lg">Dashboard</h1>
         </button>
 
         <button
@@ -85,8 +85,8 @@ const Sidebar = (props) => {
             navigate("/products");
           }}
         >
-          <MdOutlineMenuBook className="text-6xl" />
-          <h1 className="text-lg">Products</h1>
+          <MdOutlineMenuBook className="text-3xl sm:text-4xl md:text-6xl" />
+          <h1 className="text-base sm:text-lg">Products</h1>
         </button>
 
         <button
@@ -97,8 +97,8 @@ const Sidebar = (props) => {
             navigate("/categories");
           }}
         >
-          <MdOutlineCategory className="text-6xl" />
-          <h1 className="text-lg">Categories</h1>
+          <MdOutlineCategory className="text-3xl sm:text-4xl md:text-6xl" />
+          <h1 className="text-base sm:text-lg">Categories</h1>
         </button>
       </motion.div>
 

@@ -6,7 +6,7 @@ const PageNotFound = () => {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col justify-center items-center h-full w-full gap-y-20">
+    <div className="flex flex-col justify-center items-center h-full min-h-screen w-full gap-y-20">
       <h1 className="text-8xl font-anek">Page not found.</h1>
 
       <button onClick={() => navigate("/")} className="p-5 bg-primary_bg">

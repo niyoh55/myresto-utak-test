@@ -9,6 +9,7 @@ import Products from "./Pages/Products/Products";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditProduct from "./Pages/Products/EditProduct/EditProduct";
+import ViewProduct from "./Pages/Products/ViewProduct.js/ViewProduct";
 function App() {
   const [currSelected, setCurrSelected] = useState("Dashboard");
 
@@ -31,6 +32,10 @@ function App() {
             <Route
               path="/products/edit-product/:product_id"
               element={<EditProduct />}
+            />
+            <Route
+              path="/products/view-product/:product_id"
+              element={<ViewProduct />}
             />
             <Route path="/categories" element={<Category />} />
             <Route path="*" element={<PageNotFound />} />

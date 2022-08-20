@@ -90,8 +90,8 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="w-full h-full min-h-screen px-20 ">
-      <div className="py-10">
+    <div className="w-full h-full min-h-screen pl-5 md:px-20 ">
+      <div className="py-5 text-center md:text-left md:py-10">
         <h1 className="text-7xl font-anek font-bold tracking-wide mb-5 ">
           Add Product
         </h1>
@@ -199,9 +199,12 @@ const AddProduct = () => {
           handleSubmit,
           isSubmitting,
         }) => (
-          <form onSubmit={handleSubmit} className="flex flex-col">
-            <div className="flex flex-row px-20">
-              <div className="flex flex-col flex-1 gap-y-3">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col overflow-x-auto"
+          >
+            <div className="flex flex-col gap-y-10 xl:gap-y-0 xl:flex-row xl:px-20">
+              <div className="flex flex-col justify-start items-start flex-1 gap-y-3">
                 <InputField
                   title="Product Name"
                   type="text"

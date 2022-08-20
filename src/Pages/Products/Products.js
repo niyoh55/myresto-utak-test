@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addProduct,
   deleteProductAPI,
   getProductsAPI,
 } from "../../Features/Slices/ProductSlice";
 import Spinner from "../../Components/Spinner";
 import { getCategoryAPI } from "../../Features/Slices/CategorySlice";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 const Products = () => {
   const [searchProductInput, setSearchProductInput] = useState("");
@@ -43,6 +44,12 @@ const Products = () => {
     setCategoriesList(categories);
   }, [categories]);
 
+  const viewProductHandler = (product) => {
+    navigate(`/products/view-product/${product.productID}`, {
+      state: { ...product },
+    });
+  };
+
   const editProductHandler = (product) => {
     navigate(`/products/edit-product/${product.productID}`, {
       state: { ...product, isEdit: true },
@@ -53,9 +60,11 @@ const Products = () => {
     dispatch(deleteProductAPI({ productID: productID }));
   };
 
+  const tdStyle = "";
+
   return (
-    <div className="w-full min-h-screen max-w-full px-20 font-anek">
-      <div className="flex flex-row gap-x-10 justify-between items-center">
+    <div className="w-full min-h-screen max-w-full xl:px-20 pl-5 font-anek">
+      <div className="flex sm:flex-row flex-col gap-x-10 justify-between items-center">
         <div>
           <h1 className="text-6xl font-anek py-10 font-bold tracking-wide">
             Products
@@ -64,14 +73,14 @@ const Products = () => {
 
         <button
           onClick={() => navigate("/products/add-product")}
-          className="bg-green_btn text-white py-5 px-5 text-base rounded-md font-semibold active:scale-105 transition-all duration-200"
+          className="bg-primary_bg border-[1px] border-black text-white p-3 md:py-5 md:px-5 text-base rounded-md font-semibold active:scale-105 transition-all duration-200"
         >
           ADD PRODUCT
         </button>
       </div>
 
       {/* Search fields */}
-      <div className="flex flex-row gap-x-20 justify-start items-start">
+      <div className="flex flex-row gap-x-20 justify-between items-center sm:justify-start sm:items-start">
         <div className="form-control w-auto">
           <label className="label">
             <span className="label-text">Search Product:</span>
@@ -99,22 +108,24 @@ const Products = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto my-10 flex flex-col gap-y-10 justify-center items-center">
+      <div className=" w-full my-10 flex flex-col gap-y-10 justify-center items-center">
         {isLoading ? (
           <Spinner />
         ) : (
-          <table className="table table-zebra table-compact w-full">
-            <thead>
-              <tr>
-                <th className="text-center">Product Name</th>
-                <th>Category</th>
-                <th>Cost</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>View/Edit/Delete</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table className="">
+            <Thead>
+              <Tr className="bg-gray-300 border-[1px] border-black">
+                <Th className="py-2">Product Name</Th>
+                <Th>Category</Th>
+                <Th>Price</Th>
+                <Th>Cost</Th>
+                <Th>Option Name</Th>
+                <Th>Has Add-Ons</Th>
+                <Th>Stock</Th>
+                <Th>View/Edit/Delete</Th>
+              </Tr>
+            </Thead>
+            <Tbody className="text-center">
               {productsList
                 .filter((product) => {
                   if (
@@ -144,26 +155,42 @@ const Products = () => {
                     price,
                     stock,
                     cost,
+                    hasOptions,
+                    hasAddons,
+                    variations,
+                    addOns,
+                    optionName,
                   } = product;
                   return (
-                    <tr key={product.productID}>
-                      <td className="text-center ">{productName}</td>
-                      <td>{category}</td>
-                      <td>&#8369;{cost}</td>
-                      <td>&#8369;{price}</td>
-                      <td>{stock}</td>
-                      <td className="flex flex-row gap-x-5 ">
-                        <button className="btn bg-green_btn hover:bg-green_btn text-white">
+                    <Tr key={product.productID} className="hover:bg-gray-300">
+                      <Td className={tdStyle + " font-semibold"}>
+                        {productName}
+                      </Td>
+                      <Td className={tdStyle}>{category}</Td>
+                      <Td className={tdStyle}>&#8369;{price}</Td>
+                      <Td className={tdStyle}>&#8369;{cost}</Td>
+                      <Td className={tdStyle}>
+                        {optionName ? optionName : "N/A"}
+                      </Td>
+                      <Td className={tdStyle}> {hasAddons ? "Y" : "N"}</Td>
+                      <Td className={tdStyle}>{stock}</Td>
+                      <Td
+                        className={`flex flex-row justify-center items-center gap-x-5 h-full border-0 ${tdStyle}`}
+                      >
+                        <button
+                          className="btn bg-green_btn hover:bg-green_btn text-white btn-xs xl:btn-md"
+                          onClick={() => viewProductHandler(product)}
+                        >
                           View
                         </button>
                         <button
-                          className="btn bg-primary_bg hover:bg-primary_bg text-white"
+                          className="btn bg-primary_bg hover:bg-primary_bg text-white btn-xs xl:btn-md"
                           onClick={() => editProductHandler(product)}
                         >
                           Edit
                         </button>
                         <button
-                          className="btn bg-red_btn hover:bg-red_btn text-white"
+                          className="btn bg-red_btn hover:bg-red_btn text-white btn-xs xl:btn-md"
                           onClick={() =>
                             deleteProductHandler(product.productID)
                           }
@@ -174,25 +201,13 @@ const Products = () => {
                             "Delete"
                           )}
                         </button>
-                      </td>
-                    </tr>
+                      </Td>
+                    </Tr>
                   );
                 })}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         )}
-        {/* <div className="btn-group">
-          <input
-            type="radio"
-            name="options"
-            data-title="1"
-            className="btn"
-            defaultChecked
-          />
-          <input type="radio" name="options" data-title="2" className="btn" />
-          <input type="radio" name="options" data-title="3" className="btn" />
-          <input type="radio" name="options" data-title="4" className="btn" />
-        </div> */}
       </div>
     </div>
   );

@@ -108,8 +108,8 @@ const EditProduct = () => {
   };
 
   return (
-    <div className="w-full h-full min-h-screen px-20 ">
-      <div className="py-10">
+    <div className="-full h-full min-h-screen px-10 md:px-20">
+      <div className="py-5 text-center md:text-left md:py-10">
         <h1 className="text-7xl font-anek font-bold tracking-wide mb-5 ">
           Edit Product
         </h1>
@@ -125,8 +125,6 @@ const EditProduct = () => {
           optionName: optionName,
           category:
             categoriesList?.findIndex((category) => {
-              console.log(category);
-              console.log(categoryCopy);
               return category.categoryName == categoryCopy;
             }) >= 0
               ? categoryCopy
@@ -188,7 +186,7 @@ const EditProduct = () => {
             optionName,
             hasAddons,
           } = values;
-          console.log(values);
+
           let status = await dispatch(
             editProductAPI({
               productName,
@@ -204,7 +202,7 @@ const EditProduct = () => {
               productID,
             })
           );
-          console.log(status.payload);
+
           if (status.payload.name || status.payload) {
             resetForm();
             setInputs([{ variationName: "", additionalCost: 0 }]);
@@ -226,9 +224,12 @@ const EditProduct = () => {
           handleSubmit,
           isSubmitting,
         }) => (
-          <form onSubmit={handleSubmit} className="flex flex-col">
-            <div className="flex flex-row px-20">
-              <div className="flex flex-col flex-1 gap-y-3">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col overflow-x-auto"
+          >
+            <div className="flex flex-col gap-y-10 xl:gap-y-0 xl:flex-row xl:px-20">
+              <div className="flex flex-col justify-start items-start flex-1 gap-y-3">
                 <InputField
                   title="Product Name"
                   type="text"
