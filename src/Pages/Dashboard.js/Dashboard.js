@@ -71,7 +71,7 @@ const Dashboard = () => {
   return (
     <div className="w-full h-auto min-h-screen bg-slate-50 font-anek px-5 xl:px-20 pb-20">
       <div className="py-10">
-        <h1 className="text-6xl font-bold tracking-wide">Dashboard</h1>
+        <h1 className="xl:text-left text-center text-6xl font-bold tracking-wide">Dashboard</h1>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-x-5 gap-y-5">
         <DataDisplay

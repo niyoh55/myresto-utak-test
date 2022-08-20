@@ -178,19 +178,19 @@ const Products = () => {
                         className={`flex flex-row justify-center items-center gap-x-5 h-full border-0 ${tdStyle}`}
                       >
                         <button
-                          className="btn bg-green_btn hover:bg-green_btn text-white btn-xs xl:btn-md"
+                          className="btn bg-green_btn hover:bg-green_btn text-white btn-xs sm:btn-sm md:btn-md"
                           onClick={() => viewProductHandler(product)}
                         >
                           View
                         </button>
                         <button
-                          className="btn bg-primary_bg hover:bg-primary_bg text-white btn-xs xl:btn-md"
+                          className="btn bg-primary_bg hover:bg-primary_bg text-white btn-xs sm:btn-sm md:btn-md"
                           onClick={() => editProductHandler(product)}
                         >
                           Edit
                         </button>
                         <button
-                          className="btn bg-red_btn hover:bg-red_btn text-white btn-xs xl:btn-md"
+                          className="btn bg-red_btn hover:bg-red_btn text-white btn-xs sm:btn-sm md:btn-md"
                           onClick={() =>
                             deleteProductHandler(product.productID)
                           }

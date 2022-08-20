@@ -90,9 +90,9 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="w-full h-full min-h-screen pl-5 md:px-20 ">
+    <div className="w-full h-full min-h-screen pl-5 md:px-20 font-anek">
       <div className="py-5 text-center md:text-left md:py-10">
-        <h1 className="text-7xl font-anek font-bold tracking-wide mb-5 ">
+        <h1 className=" text-5xl xl:text-6xl xl:text-left text-center font-anek font-bold tracking-wide mb-5 ">
           Add Product
         </h1>
       </div>

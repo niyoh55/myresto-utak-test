@@ -77,7 +77,7 @@ const Category = () => {
     <div className="w-full h-auto min-h-screen max-w-full px-5 md:px-10 lg:px-20">
       <div className="flex flex-col mb-10 md:mb-0 md:flex-row gap-x-10 justify-between items-center">
         <div>
-          <h1 className="text-6xl font-anek py-10 font-bold tracking-wide">
+          <h1 className="xl:text-left text-center text-6xl font-anek py-10 font-bold tracking-wide">
             Category
           </h1>
         </div>
